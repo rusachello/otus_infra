@@ -1,8 +1,9 @@
-### Заголовок
+### способ подключения к someinternalhost в одну команду
 
 ssh -tt -A otus@35.210.58.114 ssh otus@10.128.0.2
 
-### Заголовок
+### подключение по алиасу
+~/.ssh/config 
 
           Host bastion
                     Hostname 35.210.58.114
@@ -16,7 +17,7 @@ ssh -tt -A otus@35.210.58.114 ssh otus@10.128.0.2
                     IdentityFile ~/.ssh/id_rsa
                     ProxyCommand  ssh -W %h:%p bastion
 
-### Заголовок
+### данные для подключения
 
-bastion_IP = 35.210.58.114
+bastion_IP = 35.210.58.114  
 someinternalhost_IP = 10.128.0.2
