@@ -1,0 +1,6 @@
+{
+    "project_id": "hue-moe",
+    "source_image_family": "ubuntu-1604-lts",
+    "machine_type": "g1-small",
+    "zone": "europe-west1-b"
+}

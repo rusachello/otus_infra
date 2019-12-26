@@ -2,14 +2,22 @@
     "builders": [
         {
             "type": "googlecompute",
-            "project_id": "otus-262520",
+            "project_id": "{{ user `project_id` }}",
             "image_name": "reddit-base-{{timestamp}}",
             "image_family": "reddit-base",
-            "source_image_family": "ubuntu-1604-lts",
-            "zone": "europe-west1-b",
+            "source_image_family": "{{ user `source_image_family` }}",
+            "zone": "{{ user `zone` }}",
             "ssh_username": "otus",
-	    "ssh_username": "ry",
-            "machine_type": "f1-micro"
+            "ssh_username": "ry",
+            "machine_type": "{{ user `machine_type` }}",
+            "image_description": "created-with-packer-lesson7",
+            "disk_size": "11",
+            "disk_type": "pd-standard",
+            "network": "default",
+            "tags": [
+                "puma-server",
+                "ttttttt"
+                    ]
         }
     ],
     "provisioners": [
@@ -18,7 +26,7 @@
             "script": "scripts/install_ruby.sh",
             "execute_command": "sudo {{.Path}}"
         },
-	{
+        {
             "type": "shell",
             "script": "scripts/install_mongodb.sh",
             "execute_command": "sudo {{.Path}}"
