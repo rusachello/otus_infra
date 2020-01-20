@@ -2,7 +2,7 @@
 # Добавление ssh-ключей в метаданные проекта для нескольких пользователей с сохранением! существующих ssh-ключей 
 resource "google_compute_project_metadata_item" "ssh-keys-ry" {
   key   = "sshKeys"
-  value = "ry:${file(var.public_key_path)} \nuser2:${file(var.public_key_path)}"
+  value = "ry:${file(var.public_key_path)}\nuser2:${file(var.public_key_path)}"
 }
 
 resource "google_compute_firewall" "firewall_ssh" {
