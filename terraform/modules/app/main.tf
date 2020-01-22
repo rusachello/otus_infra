@@ -1,26 +1,6 @@
-terraform {
-  # Версия terraform
-  required_version = "0.12.19"
-}
 
-provider "google" {
-  # Версия провайдера
-  version = "2.15"
-  region  = var.region
-  zone    = var.zone
-  # ID проекта
-  project = var.project
-}
-
-# Добавление ssh-ключей в метаданные проекта для нескольких пользователей с сохранением! существующих ssh-ключей 
-resource "google_compute_project_metadata_item" "ssh-keys-ry" {
-  key   = "sshKeys"
-  value = "ry:${file(var.public_key_path)} \nuser2:${file(var.public_key_path)}"
-}
-
-resource "google_compute_instance" "reddit-app" {
-  count        = 2
-  name         = "reddit-app${count.index}"
+resource "google_compute_instance" "app" {
+  name         = "reddit-app"
   machine_type = "g1-small"
   tags         = ["reddit-app"]
   metadata = {
@@ -28,16 +8,15 @@ resource "google_compute_instance" "reddit-app" {
     ssh-keys = "user0:${file(var.public_key_path)}\nuser1:${file(var.public_key_path)}"
   }
 
-
   boot_disk {
-    initialize_params {
-      image = var.disk_image
-    }
+    initialize_params { image = var.app_disk_image }
   }
 
   network_interface {
     network = "default"
-    access_config {}
+    access_config {
+      nat_ip = google_compute_address.app_ip.address
+    }
   }
 
   connection {
@@ -50,13 +29,18 @@ resource "google_compute_instance" "reddit-app" {
   }
 
   provisioner "file" {
-    source      = "files/puma.service"
+    source      = "../modules/app/files/puma.service"
     destination = "/tmp/puma.service"
   }
 
-  #provisioner "remote-exec" {
-  #script = "files/deploy.sh"
-  #}
+  provisioner "remote-exec" {
+    script = "../modules/app/files/deploy.sh"
+  }
+}
+
+# Создание static IP
+resource "google_compute_address" "app_ip" {
+  name = "reddit-app-ip"
 }
 
 resource "google_compute_firewall" "firewall_puma" {
