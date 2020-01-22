@@ -1,6 +1,6 @@
 terraform {
   backend "gcs" {
-    bucket  = "rusachello-otus-hw9"
-    prefix  = "terraform/state/prod"
+    bucket = "rusachello-otus-hw9"
+    prefix = "terraform/state/prod"
   }
 }

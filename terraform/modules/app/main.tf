@@ -18,7 +18,26 @@ resource "google_compute_instance" "app" {
       nat_ip = google_compute_address.app_ip.address
     }
   }
+
+  connection {
+    type  = "ssh"
+    host  = self.network_interface[0].access_config[0].nat_ip
+    user  = "ry"
+    agent = false
+    # путь до приватного ключа
+    private_key = file(var.private_key_path)
+  }
+
+  provisioner "file" {
+    source      = "../modules/app/files/puma.service"
+    destination = "/tmp/puma.service"
+  }
+
+  provisioner "remote-exec" {
+    script = "../modules/app/files/deploy.sh"
+  }
 }
+
 # Создание static IP
 resource "google_compute_address" "app_ip" {
   name = "reddit-app-ip"
