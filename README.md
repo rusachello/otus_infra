@@ -1,35 +1,7 @@
 #### HW
-1. Описана инфраструктура в main.tf
-2. Описаны переменные в variables.tf
-3. Переменным задано значение через terraform.tfvars
-4. Выходные переменные созданы в отдельном файле outputs.tf
-5. Все файлы отформатированы командой terraform fmt
-6. Создан файл terraform.tfvars.example, *.tfstate, *.tfstate.*.backup, *.tfstate.backup, *.tfvars и .terraform/ добавлены в .gitignore в корне репозитория.
-
-#### Добавление ssh-ключей в метаданные инстанса для нескольких пользователей 
-
-```
-resource "google_compute_instance" "app" {
-...
-  metadata = {
-    ssh-keys = "ry:${file(var.public_key_path)} \nuser2:${file(var.public_key_path)}"
-    }
-
-также можно использовать следующую констукцию
-  
-  metadata = {
-    ssh-keys = <<EOF
-    ry:${file(var.public_key_path)}
-    user1:${file(var.public_key_path)}
-  EOF
-  }
-```
-  
-#### Добавление ssh-ключей в метаданные проекта для нескольких пользователей с сохранением! существующих ssh-ключей во вкладке SSH-ключи. Использование директивы sshKeys (key = "sshKeys") вместо ssh-keys (key = "ssh-keys") в параметре ключа позволяет этого добиться.
-
-```
-resource "google_compute_project_metadata_item" "ssh-keys" {
-  key = "sshKeys"
-  value = "ry:${file(var.public_key_path)} \nuser2:${file(var.public_key_path)}"
-}
-```
+1. Установка Ansible (поставил глобально sudo pip install -r requirements.txt)
+2. Создал и заполнил файл inventory, затем тоже самое но в файл inventory.yml
+3. Создал и заполнил файл ansible.cfg
+4. Создал и заполнил плейбук clone.yml
+5. При первом запуске плейбука у нас ничего не произошло, поскольку репозиторий в папке reddit был актуальным и гит просто проверил его валидность, о чем нам было выведено сообщение: appserver : ok=2 changed=0
+6. При втором запуске, после удаления папки reddit из домашней директории пользователя otus указанная в плейбуке папка была не обнаружена, и было выполнено действие git clone и папка появилась, о чем нам сообщил ansible-playbook выдав в конце задачи отчет: appserver : ok=2 changed=1 
