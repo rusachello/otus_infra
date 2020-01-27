@@ -1,9 +1,9 @@
 ---
-  plugin: gcp_compute
-  projects:
-      - my-project
-  zones:
-    - "europe-west1-b"
-  filters: []
-  auth_kind: serviceaccount
-  service_account_file: "./OTUS-e62f494b21b3.json"
+plugin: gcp_compute
+projects:
+  - otus-262520
+zones:
+  - "us-central1-a"
+filters: []
+auth_kind: serviceaccount
+service_account_file: "./OTUS-e62f494b21b3.json"
