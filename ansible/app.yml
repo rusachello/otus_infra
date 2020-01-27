@@ -3,7 +3,7 @@
   hosts: app
   become: true
   vars:
-    db_host: 10.128.0.54
+    db_host: 10.128.0.58
   tasks: # <-- Блок тасков (заданий), которые будут выполняться для данных хостов
     - name: Add unit file for Puma
       copy:
